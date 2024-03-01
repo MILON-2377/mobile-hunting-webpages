@@ -4,8 +4,49 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>mobile hunting webpages</title>
+
+    <!-- tailwind and daisy ui link -->
+    
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.7.2/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+
 </head>
 <body>
+
+    <main class="h-screen flex flex-col items-center relative z-10">
+        <h1 class="text-5xl text-black text-center mt-32">Seach Your Phone Here</h1>
+       <section>
+            <div class="flex gap-5 w-[60%] mt-7 mx-auto">
+                <input id="input-container" class="input bg-purple-100 text-2xl text-black" type="text" placeholder="Search phones">
+                <button onclick="searchPhones()" class="btn btn-secondary text-2xl">Search</button>
+            </div>
+       </section>
+
+       <section>
+            <div id="display-phones-container" class="p-7 hidden rounded-lg bg-gray-200 mt-11 grid grid-cols-3 gap-5">
+
+            </div>
+       </section>
+
     
+       <div >
+        <div id="modal-container">
+          <dialog id="my_modal_5" class="modal modal-bottom sm:modal-middle">
+          <div class="modal-box">
+              <div id="phones-details-container">
+                  
+              </div>
+              <div class="modal-action">
+              <form method="dialog">
+                  <button class="btn">Close</button>
+              </form>
+              </div>
+          </div>
+          </dialog>
+          </div>
+       </div>
+    </main>
+
+    <script src="script/mobile-hunting.js"></script>
 </body>
 </html>
