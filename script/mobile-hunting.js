@@ -1,10 +1,10 @@
 
 const displayPhones = document.getElementById("display-phones-container");
 const inputContainer = document.getElementById("input-container");
-
 const enterDisplay = () => {
     inputContainer.addEventListener("keyup", (e) => {
         if(e.key === "Enter"){
+            spinLoading(true);
             searchPhones();
         }
     })
@@ -13,6 +13,7 @@ const enterDisplay = () => {
 enterDisplay();
 
 const searchPhones = () => {
+    spinLoading(true);
     phoneHuntingSearh()
     document.getElementById("display-phones-container").classList.remove("hidden");
 }
@@ -26,12 +27,19 @@ const phoneHuntingSearh = async () => {
 
     const phones = data.data;
     displayPhones.textContent = "";
+    console.log(phones.length);
+    // if(phones.data.length < 1){
+    //     const p = document.createElement("p");
+    //     p.innerText =`The Data Not Fount! Try to search another keywords!!`;
+    //     displayPhones.appendChild(p);
+    //     spinLoading(false);
+    // }
     phones.forEach( (phone) => {
         // console.log(phone);
         displayPhonesItem(phone.image, phone.phone_name, phone.slug);
         phonesDetailsData(phone.slug);
     })
-
+   
 }
 
 const displayPhonesItem = (phoneImg, phoneName, phoneId) => {
@@ -55,6 +63,7 @@ const displayPhonesItem = (phoneImg, phoneName, phoneId) => {
     `
 
     displayPhones.appendChild(div);
+    spinLoading(false);
 }
 
 const takeValueFromInput = () => {
@@ -72,19 +81,19 @@ const phonesDetailsData = async (idName) => {
         async function takePhonesDetailsData (idName) {
             const res = await fetch(`https://openapi.programming-hero.com/api/phone/${idName}`);
             const data = await res.json();
-            phonesDetailsLoad(data.data.image, data.data.name, data.data?.mainFeatures?.storage);
             console.log(data)
+            phonesDetailsLoad(data.data.image, data.data.name, data.data?.mainFeatures?.storage, data?.data?.mainFeatures?.displaySize,  data?.data?.mainFeatures?.chipSet, data?.data?.mainFeatures?.memory, data?.data?.slug, data?.data?.releaseDate, data?.data?.brand, data?.data?.others?.GPS  );
         }
     })
 }
 
-const phonesDetailsLoad = (phneImg, phoneTitle, phoneDes, phoneBrand, phoneStro, phoneDispay, phoneChip, phoneMem, PhoneSlug, phoneDate, phoneGps) => {
+const phonesDetailsLoad = (phneImg, phoneTitle, phoneStro, phoneDisplay, phoneChip, phoneMem, PhoneSlug, phoneDate, phoneBrand, phoneGps) => {
     const phonesDetails = document.getElementById("phones-details-container");
     phonesDetails.innerHTML = `
             <img src="${phneImg}" alt="Shoes" class="rounded-xl mx-auto text-3xl" />
             <h2 class="card-title">${phoneTitle} </h2>
             <p><span class="text-xl text-black font-bold">Storage: </span> ${phoneStro} </p>
-            <p><span class="text-xl text-black font-bold">Display Size: </span> ${phoneDispay} </p>
+            <p><span class="text-xl text-black font-bold">Display Size: </span> ${phoneDisplay} </p>
             <p><span class="text-xl text-black font-bold">Chipest: </span> ${phoneChip} </p>
             <p><span class="text-xl text-black font-bold">Memory:</span> ${phoneMem} </p>
             <p><span class="text-xl text-black font-bold">Slug: </span> ${PhoneSlug} </p>
@@ -92,8 +101,17 @@ const phonesDetailsLoad = (phneImg, phoneTitle, phoneDes, phoneBrand, phoneStro,
             <p><span class="text-xl text-black font-bold">Brand: </span> ${phoneBrand} </p>
             <p><span class="text-xl text-black font-bold">GPS: </span> ${phoneGps} </p>
     `
-
     phonesDetails.appendChild(div);
 }
 
+function spinLoading (value) {
+    let isDataLoading = value;
+    const spinLoading = document.getElementById("spin-loading-container");
+    if(isDataLoading){
+        spinLoading.classList.remove("hidden");
+    }else{
+        spinLoading.classList.add("hidden");
+    }
+}
 
+spinLoading()
